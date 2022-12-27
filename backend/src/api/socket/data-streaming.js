@@ -1,8 +1,14 @@
 import { Server } from "socket.io";
+import * as dotenv from "dotenv";
+dotenv.config();
 import dStreaming from "../../service/twitter-data-streaming.js";
 
 export default (server) => {
-  const io = new Server(server);
+  const io = new Server(server, {
+    cors: {
+      origins: [process.env.SOCKET_CONNECTION_CORS_ORIGIN],
+    },
+  });
 
   io.on("connection", async () => {
     console.log("Client connected...");

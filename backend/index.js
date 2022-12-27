@@ -16,5 +16,5 @@ app.use(bodyParser.json());
 dataStreamingHttp(app, dotenv);
 dataStreamingSocket(server);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.DEFAULT_SERVER_PORT || 3000;
 server.listen(PORT, () => console.log(`Listening on port ${PORT}`));

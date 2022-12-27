@@ -26,10 +26,4 @@ export default (app) => {
       handleError(error, res);
     }
   });
-
-  app.get("/", (req, res) => {
-    res.sendFile(
-      path.resolve(__dirname, "../../../../backend", "client", "index.html")
-    );
-  });
 };
