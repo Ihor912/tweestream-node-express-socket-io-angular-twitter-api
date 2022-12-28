@@ -6,13 +6,21 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiClient {
+  defaultHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+  });
+
   constructor(private http: HttpClient) {}
 
   get<T>(url: string): Observable<T> {
     return this.http.get<T>(`${url}`);
   }
 
-  post<T, D>(url: string, data: D, headers?: HttpHeaders): Observable<T> {
+  post<T, D>(
+    url: string,
+    data: D,
+    headers = this.defaultHeaders
+  ): Observable<T> {
     return this.http.post<T>(`${url}`, JSON.stringify(data), { headers });
   }
 

@@ -1,6 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
-import { StreamStatusResponse, Tweet } from '../../types/data-stream';
+import {
+  StreamConnectionError,
+  StreamStatusResponse,
+  Tweet,
+} from '../../types/data-stream';
 
 export const getDataStreamAction = createAction(
   '[Data Stream] Get Data Stream'
@@ -13,7 +17,7 @@ export const getDataStreamActionSuccess = createAction(
 
 export const getDataStreamActionFailure = createAction(
   '[Data Stream] Get Data Stream Failure',
-  props<{ error: HttpErrorResponse }>()
+  props<{ error: StreamConnectionError }>()
 );
 
 export const stopDataStreamAction = createAction(
@@ -27,5 +31,19 @@ export const stopDataStreamActionSuccess = createAction(
 
 export const stopDataStreamActionFailure = createAction(
   '[Data Stream] Stop Data Stream Failure',
-  props<{ error: HttpErrorResponse }>()
+  props<{ error: StreamConnectionError }>()
+);
+
+export const reconnectToDataStreamAction = createAction(
+  '[Data Stream] Reconnect to Data Stream'
+);
+
+export const reconnectToDataStreamActionSuccess = createAction(
+  '[Data Stream] Reconnect to Data Stream Success',
+  props<StreamStatusResponse>()
+);
+
+export const reconnectToDataStreamActionFailure = createAction(
+  '[Data Stream] Reconnect to Data Stream Failure',
+  props<{ error: StreamConnectionError }>()
 );

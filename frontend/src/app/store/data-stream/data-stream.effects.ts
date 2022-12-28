@@ -5,7 +5,11 @@ import { fetch } from '@nrwl/angular';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SocketService } from '../../services/socket.service';
-import { StreamStatusResponse, Tweet } from '../../types/data-stream';
+import {
+  StreamConnectionError,
+  StreamStatusResponse,
+  Tweet,
+} from '../../types/data-stream';
 import { TweetResponse } from '../../types/data-stream';
 import * as DataStreamActions from './data-stream.actions';
 
@@ -19,18 +23,18 @@ export class DataStreamEffects {
           this.socketService.getDataStream().pipe(
             map((tweetResponse: TweetResponse) => {
               const authorName =
-                tweetResponse.includes.users.find(
+                tweetResponse.includes?.users.find(
                   (x: { username: string }) => x.username
                 )?.username || null;
 
               const location =
-                tweetResponse.includes.users.find(
+                tweetResponse.includes?.users.find(
                   (x: { location: string }) => x.location
                 )?.location || null;
 
               const tweet: Tweet = {
-                id: tweetResponse.data.id,
-                text: tweetResponse.data.text,
+                id: tweetResponse.data?.id,
+                text: tweetResponse.data?.text,
                 authorName,
                 location,
               };
@@ -38,7 +42,7 @@ export class DataStreamEffects {
               return DataStreamActions.getDataStreamActionSuccess(tweet);
             })
           ),
-        onError: (action, error: HttpErrorResponse) =>
+        onError: (action, error: StreamConnectionError) =>
           DataStreamActions.getDataStreamActionFailure({ error }),
       })
     )
@@ -57,8 +61,27 @@ export class DataStreamEffects {
               });
             })
           ),
-        onError: (action, error: HttpErrorResponse) =>
+        onError: (action, error: StreamConnectionError) =>
           DataStreamActions.stopDataStreamActionFailure({ error }),
+      })
+    )
+  );
+
+  reconnectDataStream$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DataStreamActions.reconnectToDataStreamAction),
+      fetch({
+        run: () =>
+          of(true).pipe(
+            map(() => {
+              this.socketService.reconnectToDataStream();
+              return DataStreamActions.reconnectToDataStreamActionSuccess({
+                status: 'OK',
+              });
+            })
+          ),
+        onError: (action, error: StreamConnectionError) =>
+          DataStreamActions.reconnectToDataStreamActionFailure({ error }),
       })
     )
   );

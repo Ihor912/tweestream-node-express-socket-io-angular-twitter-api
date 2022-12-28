@@ -1,8 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ErrorHandlingService } from './services/error-handling.service';
 import { DataStreamFacade } from './store/data-stream/data-stream.facade';
 import { DataStreamingRuleFacade } from './store/data-streaming-rule/data-streaming-rule.facade';
-import { Tweet } from './types/data-stream';
+import {
+  StreamConnectionError,
+  StreamStatusResponse,
+  Tweet,
+} from './types/data-stream';
 import { RulesStatusResponse } from './types/data-streaming-rule';
 
 @Component({
@@ -12,15 +18,31 @@ import { RulesStatusResponse } from './types/data-streaming-rule';
 })
 export class AppComponent implements OnInit, OnDestroy {
   tweetStream: Tweet[] = [];
+  isDataStreamingInProgress: Observable<boolean> =
+    this.dataStreamFacade.isDataStreamingInProgress$;
 
   constructor(
     private dataStreamingRuleFacade: DataStreamingRuleFacade,
-    private dataStreamFacade: DataStreamFacade
+    private dataStreamFacade: DataStreamFacade,
+    private errorHandlingService: ErrorHandlingService
   ) {}
   ngOnInit() {
-    this.dataStreamingRuleFacade.setRules({ rules: [{ value: 'Ukraine' }] });
-    this.dataStreamingRuleFacade.deleteRules();
     this.dataStreamFacade.getDataStream();
+
+    // setTimeout(() => {
+    //   this.dataStreamFacade.stopDataStream();
+    // }, 5000);
+    // setTimeout(() => {
+    //   this.dataStreamFacade.reconnectToDataStream();
+    // }, 15000);
+
+    // setTimeout(() => {
+    //   this.dataStreamingRuleFacade.deleteRules();
+    // }, 5000);
+
+    // setTimeout(() => {
+    //   this.dataStreamingRuleFacade.setRules({ rules: [{ value: 'ukraine' }] });
+    // }, 15000);
 
     this.dataStreamingRuleFacade.setRulesSuccess$.subscribe(
       (resp: RulesStatusResponse | null) => {
@@ -32,7 +54,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.dataStreamingRuleFacade.setRulesError$.subscribe(
       (error: HttpErrorResponse | null | undefined) => {
         if (error) {
-          console.log(error);
+          this.errorHandlingService.handleHttpError(error);
         }
       }
     );
@@ -47,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.dataStreamingRuleFacade.deleteRulesError$.subscribe(
       (error: HttpErrorResponse | null | undefined) => {
         if (error) {
-          console.log(error);
+          this.errorHandlingService.handleHttpError(error);
         }
       }
     );
@@ -60,15 +82,30 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     );
     this.dataStreamFacade.getDataStreamError$.subscribe(
-      (error: HttpErrorResponse | null | undefined) => {
+      (error: StreamConnectionError | null | undefined) => {
         if (error) {
-          console.log(error);
+          this.errorHandlingService.handleStreamConnectionError(error);
+        }
+      }
+    );
+
+    this.dataStreamFacade.stopDataStreamSuccess$.subscribe(
+      (resp: StreamStatusResponse | null | undefined) => {
+        if (resp) {
+          console.log(resp);
+        }
+      }
+    );
+    this.dataStreamFacade.stopDataStreamError$.subscribe(
+      (error: StreamConnectionError | null | undefined) => {
+        if (error) {
+          this.errorHandlingService.handleStreamConnectionError(error);
         }
       }
     );
   }
 
   ngOnDestroy() {
-    // this.dataStreamFacade.disconnectFromSocket();
+    this.dataStreamFacade.stopDataStream();
   }
 }

@@ -36,3 +36,14 @@ export interface TweetResponse {
 export interface StreamStatusResponse {
   status: string;
 }
+
+export enum StreamConnectionIssueEnum {
+  TOO_MANY_CONNECTIONS = 'TooManyConnections',
+}
+
+export interface StreamConnectionError {
+  title: string;
+  detail: string;
+  connection_issue: StreamConnectionIssueEnum;
+  type: string;
+}

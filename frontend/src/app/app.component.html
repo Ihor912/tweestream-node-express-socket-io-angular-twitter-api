@@ -1,3 +1,6 @@
+<div style="padding-bottom: 50px">
+  Streaming in progress: {{ isDataStreamingInProgress | async }}
+</div>
 <div *ngFor="let tweet of tweetStream">
   <div class="card-body">
     <h5 class="card-title">{{ tweet.text }}</h5>
