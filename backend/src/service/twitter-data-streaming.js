@@ -69,7 +69,13 @@ async function streamTweets(socket) {
     try {
       const json = JSON.parse(data);
       socket.emit(SOCKET_ENDPOINTS.newTweetClientEvent, json);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+
+      if (data.connection_issue) {
+        socket.emit(SOCKET_ENDPOINTS.errorEvent, data);
+      }
+    }
   });
 
   return stream;
