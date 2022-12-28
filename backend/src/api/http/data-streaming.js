@@ -1,12 +1,10 @@
-import path from "path";
 import * as url from "url";
 import dStreaming from "../../service/twitter-data-streaming.js";
 import handleError from "../../service/http/error-handler.js";
-
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+import { API_ENDPOINTS } from "../../service/http/api.endpoints.js";
 
 export default (app) => {
-  app.post("/api/setRules", async (req, res) => {
+  app.post(API_ENDPOINTS.setRules, async (req, res) => {
     try {
       await dStreaming.setRules(req.body?.rules);
       await res.status(200).json({ status: "OK" });
@@ -15,7 +13,7 @@ export default (app) => {
     }
   });
 
-  app.post("/api/deleteRules", async (req, res) => {
+  app.delete(API_ENDPOINTS.deleteRules, async (req, res) => {
     try {
       //   Get all stream rules
       const currentRules = await dStreaming.getRules();

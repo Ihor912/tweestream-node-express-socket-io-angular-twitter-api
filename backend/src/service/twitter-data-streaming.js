@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 import httpClient from "./http/http-client.js";
+import { SOCKET_ENDPOINTS } from "../service/socket/socket.endpoints.js";
 
 const TOKEN = process.env.TWITTER_BEARER_TOKEN;
 const rulesURL = process.env.RULES_URL;
@@ -64,10 +65,10 @@ async function streamTweets(socket) {
     ...bearerHeaders,
   });
 
-  stream.on("data", (data) => {
+  stream.on(SOCKET_ENDPOINTS.newTweetServerEvent, (data) => {
     try {
       const json = JSON.parse(data);
-      socket.emit("tweet", json);
+      socket.emit(SOCKET_ENDPOINTS.newTweetClientEvent, json);
     } catch (error) {}
   });
 
