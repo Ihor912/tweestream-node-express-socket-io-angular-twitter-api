@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataStreamFacade, DataStreamingRuleFacade } from '../../../store';
 import { ErrorHandlingService } from '../../../services';
@@ -9,13 +9,14 @@ import {
   StreamStatusResponse,
   RulesStatusResponse,
 } from '../../../types';
+import { BasePageComponent } from '../../base';
 
 @Component({
   selector: 'app-tweets',
   templateUrl: './tweets.component.html',
   styleUrls: ['./tweets.component.less'],
 })
-export class TweetsComponent implements OnInit, OnDestroy {
+export class TweetsComponent extends BasePageComponent {
   tweetStream: Tweet[] = [];
   isDataStreamingInProgress: Observable<boolean> =
     this.dataStreamFacade.isDataStreamingInProgress$;
@@ -24,8 +25,10 @@ export class TweetsComponent implements OnInit, OnDestroy {
     private dataStreamingRuleFacade: DataStreamingRuleFacade,
     private dataStreamFacade: DataStreamFacade,
     private errorHandlingService: ErrorHandlingService
-  ) {}
-  ngOnInit() {
+  ) {
+    super();
+  }
+  override onInit() {
     this.dataStreamFacade.getDataStream();
 
     // setTimeout(() => {
@@ -104,7 +107,8 @@ export class TweetsComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy() {
+  override onDestroy() {
     this.dataStreamFacade.stopDataStream();
+    super.onDestroy();
   }
 }
