@@ -9,10 +9,18 @@ const routes: Routes = [
       import('./pages/tweets/tweets.module').then((m) => m.TweetsModule),
   },
   {
+    path: 'error',
+    loadChildren: () =>
+      import('./pages/error-message/error-message.module').then(
+        (m) => m.ErrorMessageModule
+      ),
+  },
+  {
     path: '',
     redirectTo: '/tweets',
     pathMatch: 'full',
   },
+  { path: '**', pathMatch: 'full', redirectTo: '/error/404' },
 ];
 
 @NgModule({
