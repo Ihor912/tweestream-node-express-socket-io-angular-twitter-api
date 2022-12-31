@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  SetRulesRequest,
-  RulesStatusResponse,
-} from '../types/data-streaming-rule';
-import { ApiClient } from './api.client';
-import { API_ENDPOINTS } from './api.endpoints';
-import { AppConfigService } from './app-config.service';
+import { ApiClient, API_ENDPOINTS, AppConfigService } from '.';
+import { SetRulesRequest, RulesStatusResponse } from '../types';
 
 @Injectable({
   providedIn: 'root',

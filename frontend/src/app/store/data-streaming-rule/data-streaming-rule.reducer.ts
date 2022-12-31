@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createReducer, on, Action } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { Rule, RulesStatusResponse } from '../../types/data-streaming-rule';
+import { Rule, RulesStatusResponse } from '../../types';
 
 import * as DataStreamingRuleActions from './data-streaming-rule.actions';
 

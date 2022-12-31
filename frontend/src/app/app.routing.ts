@@ -6,12 +6,14 @@ const routes: Routes = [
   {
     path: 'tweets',
     loadChildren: () =>
-      import('./pages/tweets/tweets.module').then((m) => m.TweetsModule),
+      import('./components/pages/tweets/tweets.module').then(
+        (m) => m.TweetsModule
+      ),
   },
   {
     path: 'error',
     loadChildren: () =>
-      import('./pages/error-message/error-message.module').then(
+      import('./components/pages/error-message/error-message.module').then(
         (m) => m.ErrorMessageModule
       ),
   },

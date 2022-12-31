@@ -1,15 +1,14 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { DataStreamFacade, DataStreamingRuleFacade } from '../../../store';
+import { ErrorHandlingService } from '../../../services';
 import {
+  Tweet,
   StreamConnectionError,
   StreamStatusResponse,
-  Tweet,
-} from '../../types/data-stream';
-import { DataStreamingRuleFacade } from '../../store/data-streaming-rule/data-streaming-rule.facade';
-import { DataStreamFacade } from '../../store/data-stream/data-stream.facade';
-import { ErrorHandlingService } from '../../services/error-handling.service';
-import { RulesStatusResponse } from '../../types/data-streaming-rule';
+  RulesStatusResponse,
+} from '../../../types';
 
 @Component({
   selector: 'app-tweets',

@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { TweetsRoutingModule } from './tweets-routing.module';
-import { TweetsComponent } from './tweets.component';
+import { TweetsComponent, TweetsRoutingModule } from '.';
 
 @NgModule({
   declarations: [TweetsComponent],

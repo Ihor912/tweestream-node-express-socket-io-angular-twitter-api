@@ -1,13 +1,12 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { createReducer, on, Action } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { Rule } from '../../types/data-streaming-rule';
 import * as DataStreamActions from './data-stream.actions';
 import {
   StreamConnectionError,
   StreamStatusResponse,
   Tweet,
-} from '../../types/data-stream';
+  Rule,
+} from '../../types';
 
 export const DATA_STREAM_FEATURE_KEY = 'data-stream';
 
@@ -21,7 +20,7 @@ export interface DataStreamState extends EntityState<Rule> {
   reconnectToDataStreamError?: StreamConnectionError | null;
 }
 
-export const dataStreamingRuleAdapter: EntityAdapter<Rule> =
+export const dataStreamAdapter: EntityAdapter<Rule> =
   createEntityAdapter<Rule>();
 
 export interface DataStreamPartialState {
@@ -29,7 +28,7 @@ export interface DataStreamPartialState {
 }
 
 export const dataStreamInitialState: DataStreamState =
-  dataStreamingRuleAdapter.getInitialState({
+  dataStreamAdapter.getInitialState({
     dataStreamingInProgress: false,
     getDataStreamSuccess: null,
     getDataStreamError: null,

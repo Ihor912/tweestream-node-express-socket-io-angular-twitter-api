@@ -1,14 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
-import {
-  StreamConnectionError,
-  Tweet,
-  TweetResponse,
-} from '../types/data-stream';
+import { StreamConnectionError, TweetResponse } from '../types';
 import { DefaultEventsMap } from '@socket.io/component-emitter';
-import { AppConfigService } from './app-config.service';
-import { SOCKET_ENDPOINTS } from './socket.endpoints';
+import { AppConfigService, SOCKET_ENDPOINTS } from '.';
 
 @Injectable({
   providedIn: 'root',

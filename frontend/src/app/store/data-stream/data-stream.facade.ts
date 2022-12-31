@@ -8,7 +8,7 @@ import {
   StreamConnectionError,
   StreamStatusResponse,
   Tweet,
-} from '../../types/data-stream';
+} from '../../types';
 
 @Injectable()
 export class DataStreamFacade {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { cloneDeep } from 'lodash';
-import { BASE_APP_CONFIG } from '../config/base-app-config';
-import { AppConfig } from '../types/app-config';
+import { BASE_APP_CONFIG } from '../config';
+import { AppConfig } from '../types';
 
 @Injectable({
   providedIn: 'root',

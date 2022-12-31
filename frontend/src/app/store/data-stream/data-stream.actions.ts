@@ -1,10 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
 import {
   StreamConnectionError,
   StreamStatusResponse,
   Tweet,
-} from '../../types/data-stream';
+} from '../../types';
 
 export const getDataStreamAction = createAction(
   '[Data Stream] Get Data Stream'

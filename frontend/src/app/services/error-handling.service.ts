@@ -1,9 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  StreamConnectionError,
-  StreamConnectionIssueEnum,
-} from '../types/data-stream';
+import { StreamConnectionError, StreamConnectionIssueEnum } from '../types';
 
 @Injectable({
   providedIn: 'root',

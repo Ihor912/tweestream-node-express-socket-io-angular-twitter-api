@@ -1,16 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { fetch } from '@nrwl/angular';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SocketService } from '../../services/socket.service';
-import {
-  StreamConnectionError,
-  StreamStatusResponse,
-  Tweet,
-} from '../../types/data-stream';
-import { TweetResponse } from '../../types/data-stream';
+import { SocketService } from '../../services';
+import { StreamConnectionError, Tweet, TweetResponse } from '../../types';
 import * as DataStreamActions from './data-stream.actions';
 
 @Injectable()

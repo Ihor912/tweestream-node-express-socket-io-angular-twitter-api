@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { fetch } from '@nrwl/angular';
 import { map } from 'rxjs/operators';
-import { ApiService } from '../../services/api.service';
-import { RulesStatusResponse } from '../../types/data-streaming-rule';
+import { ApiService } from '../../services';
+import { RulesStatusResponse } from '../../types';
 import * as DataStreamingRuleActions from './data-streaming-rule.actions';
 
 @Injectable()
