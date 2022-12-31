@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
-import { StreamConnectionError, TweetResponse } from '../types';
+import {
+  StreamConnectionError,
+  StreamConnectionIssueEnum,
+  TweetResponse,
+} from '../types';
 import { DefaultEventsMap } from '@socket.io/component-emitter';
 import { AppConfigService, SOCKET_ENDPOINTS } from '.';
 
@@ -24,9 +28,18 @@ export class SocketService {
       this.socket.on(this.socketEndpoints.newTweetClientEvent, (tweet) =>
         observer.next(tweet as TweetResponse)
       );
+
+      // handle server error
       this.socket.on(this.socketEndpoints.errorEvent, (error) =>
         observer.error(error as StreamConnectionError)
       );
+
+      // handle no-connection-with-server error
+      this.socket.on(this.socketEndpoints.noConnectionEvent, () => {
+        observer.error({
+          connection_issue: StreamConnectionIssueEnum.NO_CONNECTION_WITH_SERVER,
+        } as StreamConnectionError);
+      });
       return () => {
         this.socket.disconnect();
       };

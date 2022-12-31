@@ -39,6 +39,7 @@ export interface StreamStatusResponse {
 
 export enum StreamConnectionIssueEnum {
   TOO_MANY_CONNECTIONS = 'TooManyConnections',
+  NO_CONNECTION_WITH_SERVER = 'NoConnectionWithServer',
 }
 
 export interface StreamConnectionError {

@@ -16,6 +16,9 @@ export class ErrorHandlingService {
             'This stream is currently at the maximum allowed connection limit.'
           );
           break;
+        case StreamConnectionIssueEnum.NO_CONNECTION_WITH_SERVER:
+          alert('No connection with Server');
+          break;
 
         default:
           alert('Something went wrong.');
