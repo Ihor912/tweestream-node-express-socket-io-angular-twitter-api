@@ -3,16 +3,11 @@ import { Component } from '@angular/core';
 import { Observable, takeUntil } from 'rxjs';
 import { DataStreamFacade, DataStreamingRuleFacade } from '../../../store';
 import { ErrorHandlingService } from '../../../services';
-import {
-  Tweet,
-  StreamConnectionError,
-  StreamStatusResponse,
-  RulesStatusResponse,
-} from '../../../types';
+import { Tweet, StreamConnectionError } from '../../../types';
 import { BasePageComponent } from '../../base';
 
 @Component({
-  selector: 'app-tweets',
+  selector: 'tweets',
   templateUrl: './tweets.component.html',
   styleUrls: ['./tweets.component.less'],
 })

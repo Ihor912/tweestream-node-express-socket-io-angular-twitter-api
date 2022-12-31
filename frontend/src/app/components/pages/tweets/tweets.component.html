@@ -1,18 +1,9 @@
 <div style="padding-bottom: 50px">
   Streaming in progress: {{ isDataStreamingInProgress | async }}
 </div>
-<div *ngFor="let tweet of tweetStream; trackBy: tweetTrackBy">
-  <div class="card-body">
-    <h5 class="card-title">{{ tweet.text }}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">{{ tweet.authorName }}</h6>
-    <h5 class="card-subtitle mb-2">{{ tweet.location || "" }}</h5>
-
-    <a
-      class="btn btn-primary mt-3"
-      target="_blank"
-      href="https://twitter.com/{{ tweet.authorName }}/status/{{ tweet.id }}"
-    >
-      <i class="fab fa-twitter"></i> Go To Tweet
-    </a>
-  </div>
-</div>
+<tweet-card></tweet-card>
+<tweet-card
+  *ngFor="let tweet of tweetStream; trackBy: tweetTrackBy"
+  [data]="tweet"
+>
+</tweet-card>

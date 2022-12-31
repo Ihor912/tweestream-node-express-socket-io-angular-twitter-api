@@ -1,0 +1,12 @@
+<div *ngIf="data">
+  <h5>{{ data.text }}</h5>
+  <h6>{{ data.authorName }}</h6>
+  <h5>{{ data.location || "" }}</h5>
+
+  <a
+    target="_blank"
+    href="https://twitter.com/{{ data.authorName }}/status/{{ data.id }}"
+  >
+    Go To Tweet
+  </a>
+</div>
