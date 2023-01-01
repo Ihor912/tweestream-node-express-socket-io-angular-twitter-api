@@ -13,6 +13,7 @@ import { BasePageComponent } from '../../base';
 })
 export class TweetsComponent extends BasePageComponent {
   tweetStream: Tweet[] = [];
+  isLoading = true;
   isDataStreamingInProgress: Observable<boolean> =
     this.dataStreamFacade.isDataStreamingInProgress$;
 
@@ -61,6 +62,7 @@ export class TweetsComponent extends BasePageComponent {
       .pipe(takeUntil(this.destroyed$))
       .subscribe((tweet: Tweet | null) => {
         if (tweet) {
+          this.isLoading = false;
           this.tweetStream.unshift(tweet);
         }
       });
@@ -68,6 +70,7 @@ export class TweetsComponent extends BasePageComponent {
       .pipe(takeUntil(this.destroyed$))
       .subscribe((error: StreamConnectionError | null | undefined) => {
         if (error) {
+          this.isLoading = false;
           this.errorHandlingService.handleStreamConnectionError(error);
         }
       });

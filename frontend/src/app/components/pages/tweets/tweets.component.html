@@ -1,8 +1,17 @@
 <div style="padding-bottom: 50px">
   Streaming in progress: {{ isDataStreamingInProgress | async }}
 </div>
-<tweet-card
-  *ngFor="let tweet of tweetStream; trackBy: tweetTrackBy"
-  [data]="tweet"
->
-</tweet-card>
+
+<ng-container *ngIf="!isLoading; else loadingIndicator">
+  <tweet-card
+    *ngFor="let tweet of tweetStream; trackBy: tweetTrackBy"
+    [data]="tweet"
+  >
+  </tweet-card>
+</ng-container>
+
+<ng-template #loadingIndicator>
+  <nz-skeleton [nzActive]="isLoading"></nz-skeleton>
+  <nz-skeleton [nzActive]="isLoading"></nz-skeleton>
+  <nz-skeleton [nzActive]="isLoading"></nz-skeleton>
+</ng-template>
