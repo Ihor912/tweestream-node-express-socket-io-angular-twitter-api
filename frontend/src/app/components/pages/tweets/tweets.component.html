@@ -3,11 +3,17 @@
 </div>
 
 <ng-container *ngIf="!isLoading; else loadingIndicator">
-  <tweet-card
-    *ngFor="let tweet of tweetStream; trackBy: tweetTrackBy"
-    [data]="tweet"
-  >
-  </tweet-card>
+  <ng-container *ngIf="tweetStream?.length; else noData">
+    <tweet-card
+      *ngFor="let tweet of tweetStream; trackBy: tweetTrackBy"
+      [data]="tweet"
+    >
+    </tweet-card>
+  </ng-container>
+
+  <ng-template #noData>
+    <nz-empty></nz-empty>
+  </ng-template>
 </ng-container>
 
 <ng-template #loadingIndicator>
