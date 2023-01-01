@@ -72,6 +72,7 @@ export class TweetsComponent extends BasePageComponent {
         if (error) {
           this.isLoading = false;
           this.errorHandlingService.handleStreamConnectionError(error);
+          this.dataStreamFacade.stopDataStream();
         }
       });
   }
