@@ -25,6 +25,7 @@
     "@nrwl/angular": "^15.4.2",
     "@types/lodash": "^4.14.191",
     "lodash": "^4.17.21",
+    "ng-zorro-antd": "^15.0.0",
     "rxjs": "~7.5.0",
     "socket.io-client": "^4.5.4",
     "tslib": "^2.3.0",

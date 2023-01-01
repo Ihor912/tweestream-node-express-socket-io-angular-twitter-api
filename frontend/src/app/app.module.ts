@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { SharedStoreModule } from './store/shared-store.module';
 import { AppRoutingModule } from './app.routing';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +21,8 @@ import { RouterModule } from '@angular/router';
     SharedStoreModule,
     RouterModule.forRoot([]),
     AppRoutingModule,
+    FormsModule,
+    BrowserAnimationsModule,
   ],
   bootstrap: [AppComponent],
 })
