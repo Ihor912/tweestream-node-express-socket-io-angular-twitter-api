@@ -2,22 +2,24 @@
   [streamConnectionStatus]="streamConnectionStatus$ | async"
 ></page-header>
 
-<ng-container *ngIf="!isLoading; else loadingIndicator">
-  <ng-container *ngIf="tweetStream?.length; else noData">
-    <tweet-card
-      *ngFor="let tweet of tweetStream; trackBy: tweetTrackBy"
-      [data]="tweet"
-    >
-    </tweet-card>
+<div class="list-container">
+  <ng-container *ngIf="!isLoading; else loadingIndicator">
+    <ng-container *ngIf="tweetStream?.length; else noData">
+      <tweet-card
+        *ngFor="let tweet of tweetStream; trackBy: tweetTrackBy"
+        [data]="tweet"
+      >
+      </tweet-card>
+    </ng-container>
+
+    <ng-template #noData>
+      <nz-empty></nz-empty>
+    </ng-template>
   </ng-container>
 
-  <ng-template #noData>
-    <nz-empty></nz-empty>
+  <ng-template #loadingIndicator>
+    <nz-skeleton [nzActive]="isLoading"></nz-skeleton>
+    <nz-skeleton [nzActive]="isLoading"></nz-skeleton>
+    <nz-skeleton [nzActive]="isLoading"></nz-skeleton>
   </ng-template>
-</ng-container>
-
-<ng-template #loadingIndicator>
-  <nz-skeleton [nzActive]="isLoading"></nz-skeleton>
-  <nz-skeleton [nzActive]="isLoading"></nz-skeleton>
-  <nz-skeleton [nzActive]="isLoading"></nz-skeleton>
-</ng-template>
+</div>

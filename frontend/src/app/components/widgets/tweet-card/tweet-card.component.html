@@ -1,12 +1,14 @@
-<div *ngIf="data">
-  <h5>{{ data.text }}</h5>
-  <h6>{{ data.authorName }}</h6>
-  <h5>{{ data.location || "" }}</h5>
-
-  <a
-    target="_blank"
-    href="https://twitter.com/{{ data.authorName }}/status/{{ data.id }}"
-  >
-    <h1>{{ "tweet-card.go-to-tweet.btn-text" | translate }}</h1>
-  </a>
+<div class="card-container" *ngIf="data">
+  <nz-card nzTitle="@{{ data.authorName }}" [nzExtra]="extraTemplate">
+    <h5>{{ data.text }}</h5>
+    <h3>{{ data.location || "" }}</h3>
+  </nz-card>
+  <ng-template #extraTemplate>
+    <a
+      target="_blank"
+      href="https://twitter.com/{{ data.authorName }}/status/{{ data.id }}"
+    >
+      {{ "tweet-card.go-to-tweet.btn-text" | translate }}
+    </a>
+  </ng-template>
 </div>

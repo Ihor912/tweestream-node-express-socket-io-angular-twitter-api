@@ -4,7 +4,7 @@
   <nz-page-header-tags>
     <ng-container [ngSwitch]="streamConnectionStatus">
       <nz-tag *ngSwitchCase="StreamConnectionStatusEnum.ON" nzColor="success">{{
-        "site.title" | translate
+        "connection-status.on" | translate
       }}</nz-tag>
       <nz-tag *ngSwitchCase="StreamConnectionStatusEnum.OFF" nzColor="warning">
         <span nz-icon nzType="exclamation-circle"></span>
