@@ -2,7 +2,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { map, Observable, takeUntil } from 'rxjs';
 import { DataStreamFacade, DataStreamingRuleFacade } from '../../../store';
-import { ErrorHandlingService, SocketService } from '../../../services';
+import {
+  ErrorHandlingService,
+  SocketService,
+  TimeTrackingService,
+} from '../../../services';
 import {
   Tweet,
   StreamConnectionError,
@@ -11,7 +15,6 @@ import {
   RulesStatusResponse,
 } from '../../../types';
 import { BasePageComponent } from '../../base';
-import { TimeTrackingService } from 'src/app/services/time-tracking.service';
 
 @Component({
   selector: 'tweets',
@@ -33,25 +36,18 @@ export class TweetsComponent extends BasePageComponent {
     );
 
   constructor(
-    private dataStreamingRuleFacade: DataStreamingRuleFacade,
-    private dataStreamFacade: DataStreamFacade,
-    private errorHandlingService: ErrorHandlingService,
-    private socketService: SocketService,
-    private timeTrackingService: TimeTrackingService
+    public dataStreamingRuleFacade: DataStreamingRuleFacade,
+    public dataStreamFacade: DataStreamFacade,
+    public errorHandlingService: ErrorHandlingService,
+    public socketService: SocketService,
+    public timeTrackingService: TimeTrackingService
   ) {
     super();
   }
+
   override onInit() {
     this.dataStreamingRuleFacade.getRules();
     this.dataStreamFacade.getDataStream();
-
-    this.dataStreamingRuleFacade.getRulesError$
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((error: HttpErrorResponse | null | undefined) => {
-        if (error) {
-          // this.errorHandlingService.handleHttpError(error);
-        }
-      });
 
     this.dataStreamingRuleFacade.setRulesSuccess$
       .pipe(takeUntil(this.destroyed$))
@@ -62,14 +58,6 @@ export class TweetsComponent extends BasePageComponent {
       });
 
     this.dataStreamingRuleFacade.setRulesError$
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((error: HttpErrorResponse | null | undefined) => {
-        if (error) {
-          this.errorHandlingService.handleHttpError(error);
-        }
-      });
-
-    this.dataStreamingRuleFacade.deleteRulesError$
       .pipe(takeUntil(this.destroyed$))
       .subscribe((error: HttpErrorResponse | null | undefined) => {
         if (error) {

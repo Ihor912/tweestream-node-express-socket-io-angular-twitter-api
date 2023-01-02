@@ -5,3 +5,4 @@ export { AppConfigService } from './app-config.service';
 export { ErrorHandlingService } from './error-handling.service';
 export { SOCKET_ENDPOINTS } from './socket.endpoints';
 export { SocketService } from './socket.service';
+export { TimeTrackingService } from './time-tracking.service';

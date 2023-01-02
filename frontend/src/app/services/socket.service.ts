@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { distinctUntilChanged, filter, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import {
   StreamConnectionError,

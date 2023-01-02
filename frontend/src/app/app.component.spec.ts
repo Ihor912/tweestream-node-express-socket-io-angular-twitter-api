@@ -1,12 +1,29 @@
 import { TestBed } from '@angular/core/testing';
+import { Router, RouterModule } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { of } from 'rxjs';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
+      providers: [
+        {
+          provide: TranslateService,
+          useValue: {
+            setDefaultLang: jest.fn(),
+            use: jest.fn(),
+          },
+        },
+        {
+          provide: Router,
+          useValue: {
+            events: of(),
+          },
+        },
       ],
+      imports: [RouterModule],
+      declarations: [AppComponent],
     }).compileComponents();
   });
 
@@ -14,18 +31,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'frontend'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('frontend');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('frontend app is running!');
   });
 });

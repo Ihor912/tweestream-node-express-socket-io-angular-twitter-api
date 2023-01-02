@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class TimeTrackingService {
-  private _interval: NodeJS.Timer;
+  private _interval!: NodeJS.Timer;
   private _tweetsNumber: number = 0;
   private _averageNumberOfTweetsPerMinute: number = 0;
   private _startTrackingDateTime: number = 0;

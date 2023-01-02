@@ -9,7 +9,8 @@ import { BaseComponent } from '../../base';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TweetCardComponent extends BaseComponent {
-  @Input() data: Tweet;
+  @Input()
+  data!: Tweet;
 
   constructor() {
     super();

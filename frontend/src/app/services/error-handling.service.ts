@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ErrorHandlingService {
   constructor(
-    private notificationService: NzNotificationService,
+    public notificationService: NzNotificationService,
     public translateService: TranslateService
   ) {}
 
@@ -32,7 +32,10 @@ export class ErrorHandlingService {
           break;
 
         default:
-          alert('Something went wrong.');
+          this.notificationService.error(
+            this.translateService.instant('general.error'),
+            this.translateService.instant('error.message.something-went-wrong')
+          );
       }
     }
   }

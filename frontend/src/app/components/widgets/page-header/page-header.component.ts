@@ -24,7 +24,7 @@ export class PageHeaderComponent extends BaseComponent {
 
   readonly StreamConnectionStatusEnum = StreamConnectionStatusEnum;
 
-  constructor(private router: Router) {
+  constructor(public router: Router) {
     super();
   }
 

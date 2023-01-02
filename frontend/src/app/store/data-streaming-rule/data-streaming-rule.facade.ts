@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Action, select, Store } from '@ngrx/store';
 import * as fromDataStreaminRule from './data-streaming-rule.reducer';
 import * as DataStreamingRuleSelectors from './data-streaming-rule.selectors';
 import * as DataStreamingRuleActions from './data-streaming-rule.actions';
-import {
-  Rule,
-  RulesResponse,
-  RulesState,
-  RulesStatusResponse,
-  SetRulesRequest,
-} from '../../types';
+import { RulesState, RulesStatusResponse, SetRulesRequest } from '../../types';
 import { Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
