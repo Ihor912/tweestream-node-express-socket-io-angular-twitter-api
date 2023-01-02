@@ -1,13 +1,20 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createReducer, on, Action } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { Rule, RulesStatusResponse } from '../../types';
+import {
+  Rule,
+  RulesResponse,
+  RulesState,
+  RulesStatusResponse,
+} from '../../types';
 
 import * as DataStreamingRuleActions from './data-streaming-rule.actions';
 
 export const DATA_STREAMIN_RULE_FEATURE_KEY = 'data-streaming-rule';
 
 export interface DataStreamingRuleState extends EntityState<Rule> {
+  getRulesSuccess: RulesState | null;
+  getRulesError?: HttpErrorResponse | null;
   setRulesSuccess: RulesStatusResponse | null;
   setRulesError?: HttpErrorResponse | null;
   deleteRulesSuccess: RulesStatusResponse | null;
@@ -23,6 +30,8 @@ export interface DataStreamingRulePartialState {
 
 export const dataStreamingRuleInitialState: DataStreamingRuleState =
   dataStreamingRuleAdapter.getInitialState({
+    getRulesSuccess: null,
+    getRulesError: null,
     setRulesSuccess: null,
     setRulesError: null,
     deleteRulesSuccess: null,
@@ -31,6 +40,21 @@ export const dataStreamingRuleInitialState: DataStreamingRuleState =
 
 const reducer = createReducer(
   dataStreamingRuleInitialState,
+  on(DataStreamingRuleActions.getRulesAction, (state, data) => ({
+    ...state,
+    getRulesSuccess: null,
+    getRulesError: null,
+  })),
+  on(DataStreamingRuleActions.getRulesActionSuccess, (state, data) => ({
+    ...state,
+    getRulesSuccess: data,
+    getRulesError: null,
+  })),
+  on(DataStreamingRuleActions.getRulesActionFailure, (state, { error }) => ({
+    ...state,
+    getRulesSuccess: null,
+    getRulesError: error,
+  })),
   on(DataStreamingRuleActions.setRulesAction, (state, data) => ({
     ...state,
     setRulesSuccess: null,

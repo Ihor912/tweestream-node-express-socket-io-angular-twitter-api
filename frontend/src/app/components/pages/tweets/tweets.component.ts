@@ -1,12 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Observable, takeUntil } from 'rxjs';
+import { map, Observable, takeUntil } from 'rxjs';
 import { DataStreamFacade, DataStreamingRuleFacade } from '../../../store';
 import { ErrorHandlingService, SocketService } from '../../../services';
 import {
   Tweet,
   StreamConnectionError,
   StreamConnectionStatusEnum,
+  RulesState,
 } from '../../../types';
 import { BasePageComponent } from '../../base';
 
@@ -18,8 +19,16 @@ import { BasePageComponent } from '../../base';
 export class TweetsComponent extends BasePageComponent {
   tweetStream: Tweet[] = [];
   isLoading = true;
+
   streamConnectionStatus$: Observable<StreamConnectionStatusEnum> =
     this.dataStreamFacade.streamConnectionStatus$;
+
+  currentStreamingHashtags$: Observable<string[] | undefined> =
+    this.dataStreamingRuleFacade.getRulesSuccess$.pipe(
+      map((data: RulesState | null) => {
+        return (data?.rules || []).map((x) => x.value);
+      })
+    );
 
   constructor(
     private dataStreamingRuleFacade: DataStreamingRuleFacade,
@@ -30,15 +39,16 @@ export class TweetsComponent extends BasePageComponent {
     super();
   }
   override onInit() {
+    this.dataStreamingRuleFacade.getRules();
     this.dataStreamFacade.getDataStream();
 
-    // setTimeout(() => {
-    //   this.dataStreamingRuleFacade.deleteRules();
-    // }, 5000);
-
-    // setTimeout(() => {
-    //   this.dataStreamingRuleFacade.setRules({ rules: [{ value: 'ukraine' }] });
-    // }, 15000);
+    this.dataStreamingRuleFacade.getRulesError$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((error: HttpErrorResponse | null | undefined) => {
+        if (error) {
+          this.errorHandlingService.handleHttpError(error);
+        }
+      });
 
     this.dataStreamingRuleFacade.setRulesError$
       .pipe(takeUntil(this.destroyed$))
@@ -64,6 +74,7 @@ export class TweetsComponent extends BasePageComponent {
           this.tweetStream.unshift(tweet);
         }
       });
+
     this.dataStreamFacade.getDataStreamError$
       .pipe(takeUntil(this.destroyed$))
       .subscribe((error: StreamConnectionError | null | undefined) => {
@@ -72,6 +83,11 @@ export class TweetsComponent extends BasePageComponent {
           this.errorHandlingService.handleStreamConnectionError(error);
         }
       });
+  }
+
+  onHashtagsChange(hashtagNames: string[]) {
+    const hashtags = (hashtagNames || []).map((x) => ({ value: x }));
+    this.dataStreamingRuleFacade.setRules({ rules: hashtags });
   }
 
   tweetTrackBy(index: number, tweet: Tweet) {

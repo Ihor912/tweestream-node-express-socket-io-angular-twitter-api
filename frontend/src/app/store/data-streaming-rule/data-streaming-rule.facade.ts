@@ -3,12 +3,25 @@ import { select, Store } from '@ngrx/store';
 import * as fromDataStreaminRule from './data-streaming-rule.reducer';
 import * as DataStreamingRuleSelectors from './data-streaming-rule.selectors';
 import * as DataStreamingRuleActions from './data-streaming-rule.actions';
-import { RulesStatusResponse, SetRulesRequest } from '../../types';
+import {
+  Rule,
+  RulesResponse,
+  RulesState,
+  RulesStatusResponse,
+  SetRulesRequest,
+} from '../../types';
 import { Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class DataStreamingRuleFacade {
+  getRulesSuccess$: Observable<RulesState | null> = this.store.pipe(
+    select(DataStreamingRuleSelectors.getRulesSuccess)
+  );
+
+  getRulesError$: Observable<HttpErrorResponse | null | undefined> =
+    this.store.pipe(select(DataStreamingRuleSelectors.getRulesError));
+
   setRulesSuccess$: Observable<RulesStatusResponse | null> = this.store.pipe(
     select(DataStreamingRuleSelectors.setRulesSuccess)
   );
@@ -26,6 +39,10 @@ export class DataStreamingRuleFacade {
   constructor(
     private store: Store<fromDataStreaminRule.DataStreamingRulePartialState>
   ) {}
+
+  getRules(): void {
+    this.store.dispatch(DataStreamingRuleActions.getRulesAction());
+  }
 
   setRules(request: SetRulesRequest): void {
     this.store.dispatch(DataStreamingRuleActions.setRulesAction(request));

@@ -24,7 +24,17 @@
     </ng-container>
   </nz-page-header-tags>
 
-  <nz-page-header-extra>
-    <nz-space> </nz-space>
+  <nz-page-header-extra *ngIf="streamConnectionStatus">
+    <nz-space>
+      <nz-select
+        nzMode="tags"
+        [nzPlaceHolder]="
+          'page-header.hashtags-dropdown.placeholder' | translate
+        "
+        [(ngModel)]="currentStreamingHashtags"
+        (ngModelChange)="hashtagsChange.emit($event)"
+      >
+      </nz-select>
+    </nz-space>
   </nz-page-header-extra>
 </nz-page-header>

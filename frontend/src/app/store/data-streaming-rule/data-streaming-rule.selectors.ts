@@ -10,6 +10,14 @@ export const getDataStreamingRulesState = createFeatureSelector<
   DataStreamingRuleState
 >(DATA_STREAMIN_RULE_FEATURE_KEY);
 
+export const getRulesSuccess = createSelector(
+  getDataStreamingRulesState,
+  (state: DataStreamingRuleState) => state.getRulesSuccess
+);
+export const getRulesError = createSelector(
+  getDataStreamingRulesState,
+  (state: DataStreamingRuleState) => state.getRulesError
+);
 export const setRulesSuccess = createSelector(
   getDataStreamingRulesState,
   (state: DataStreamingRuleState) => state.setRulesSuccess

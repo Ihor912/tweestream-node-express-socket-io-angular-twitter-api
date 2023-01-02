@@ -9,5 +9,6 @@
   "connection-status.processing": "Processing",
   "page-not-found.title": "404 Error",
   "page-not-found.subtitle": "Page Not Found",
-  "tweet-card.go-to-tweet.btn-text": "Go To Tweet"
+  "tweet-card.go-to-tweet.btn-text": "Go To Tweet",
+  "page-header.hashtags-dropdown.placeholder": "Type Hashtags for Searching"
 }

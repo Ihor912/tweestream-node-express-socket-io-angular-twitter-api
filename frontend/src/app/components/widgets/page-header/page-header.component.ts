@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { StreamConnectionStatusEnum } from '../../../types';
 import { BaseComponent } from '../../base';
@@ -11,6 +17,9 @@ import { BaseComponent } from '../../base';
 })
 export class PageHeaderComponent extends BaseComponent {
   @Input() streamConnectionStatus: StreamConnectionStatusEnum | null = null;
+  @Input() currentStreamingHashtags: string[] | null | undefined = [];
+
+  @Output() hashtagsChange: EventEmitter<string[]> = new EventEmitter();
 
   readonly StreamConnectionStatusEnum = StreamConnectionStatusEnum;
 

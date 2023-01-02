@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiClient, API_ENDPOINTS, AppConfigService } from '.';
-import { SetRulesRequest, RulesStatusResponse } from '../types';
+import { SetRulesRequest, RulesStatusResponse, RulesResponse } from '../types';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +13,12 @@ export class ApiService {
     public appConfigService: AppConfigService
   ) {}
 
-  prepareApiURL(API_URL: string) {
+  prepareApiURL(API_URL: string): string {
     return this.appConfigService.getBaseApiURL() + API_URL;
+  }
+
+  getRules(): Observable<RulesResponse> {
+    return this.api.get(this.prepareApiURL(this.apiEndpoints.getRules));
   }
 
   setRules(request: SetRulesRequest): Observable<RulesStatusResponse> {

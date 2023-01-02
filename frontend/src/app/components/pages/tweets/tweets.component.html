@@ -1,5 +1,7 @@
 <page-header
   [streamConnectionStatus]="streamConnectionStatus$ | async"
+  [currentStreamingHashtags]="currentStreamingHashtags$ | async"
+  (hashtagsChange)="onHashtagsChange($event)"
 ></page-header>
 
 <div class="list-container">

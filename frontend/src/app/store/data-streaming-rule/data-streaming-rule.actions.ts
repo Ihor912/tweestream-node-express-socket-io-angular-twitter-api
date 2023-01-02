@@ -1,6 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { createAction, props } from '@ngrx/store';
-import { SetRulesRequest, RulesStatusResponse } from '../../types';
+import { SetRulesRequest, RulesStatusResponse, RulesState } from '../../types';
+
+export const getRulesAction = createAction('[Data Streaming Rule] Get Rules');
+
+export const getRulesActionSuccess = createAction(
+  '[Data Streaming Rule] Get Rules Success',
+  props<RulesState>()
+);
+
+export const getRulesActionFailure = createAction(
+  '[Data Streaming Rule] Get Rules Failure',
+  props<{ error: HttpErrorResponse }>()
+);
 
 export const setRulesAction = createAction(
   '[Data Streaming Rule] Set Rules',
