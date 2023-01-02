@@ -65,10 +65,14 @@ async function streamTweets(socket) {
     ...bearerHeaders,
   });
 
+  stream.autoReconnect = true;
+  stream.autoReconnectRetries = 99999;
+
   stream.on(SOCKET_ENDPOINTS.newTweetServerEvent, (data) => {
     try {
       const json = JSON.parse(data);
       socket.emit(SOCKET_ENDPOINTS.newTweetClientEvent, json);
+      console.log(json);
     } catch (error) {
       console.error(error);
 
