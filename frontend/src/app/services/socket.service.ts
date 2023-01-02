@@ -18,18 +18,40 @@ export class SocketService {
   constructor(public appConfigService: AppConfigService) {}
 
   getDataStream(): Observable<TweetResponse> {
-    if (!this.socket) {
-      this.socket = io(this.prepareSocketURL());
+    this.socket = io(this.prepareSocketURL());
 
-      this.socket.on(this.socketEndpoints.dataStreamConnectionEvent, () => {
-        console.log('Connected to server.');
-      });
-    }
+    this.socket.on(this.socketEndpoints.dataStreamConnectionEvent, () => {
+      console.log('Connected to server.');
+    });
 
     return new Observable<TweetResponse>((observer) => {
       this.socket.on(this.socketEndpoints.newTweetClientEvent, (tweet) => {
         observer.next(tweet as TweetResponse);
       });
+
+      // setInterval(() => {
+      //   observer.next({
+      //     data: {
+      //       author_id: '234234',
+      //       id: 'sdfsdfser3wereter',
+      //       public_metrics: {
+      //         like_count: 31,
+      //         retweet_count: 4,
+      //       },
+      //       text: 'Test djkd feriof enio rfn eriogerg erg eoirgjoie rgiof ergoij',
+      //     },
+      //     includes: {
+      //       users: [
+      //         {
+      //           id: 'jfojer334r34',
+      //           name: 'Test User',
+      //           username: 'testUser',
+      //           location: 'LA',
+      //         },
+      //       ],
+      //     },
+      //   } as TweetResponse);
+      // }, 5000);
 
       // handle server error
       this.socket.on(this.socketEndpoints.errorEvent, (error) =>
@@ -43,7 +65,7 @@ export class SocketService {
         } as StreamConnectionError);
       });
       return () => {
-        this.socket.disconnect();
+        // this.socket.disconnect();
       };
     });
   }

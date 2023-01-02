@@ -8,6 +8,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 const sharedModules = [
   TranslateModule,
@@ -18,6 +19,7 @@ const sharedModules = [
   NzButtonModule,
   NzSpaceModule,
   NzCardModule,
+  NzSelectModule,
 ];
 
 @NgModule({

@@ -25,6 +25,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IconDefinition } from '@ant-design/icons-angular';
 import * as AllIcons from '@ant-design/icons-angular/icons';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
+import { PageHeaderModule } from './components/widgets/page-header';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -57,6 +58,7 @@ export function createTranslateLoader(http: HttpClient) {
     FormsModule,
     BrowserAnimationsModule,
     NzNotificationModule,
+    PageHeaderModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },

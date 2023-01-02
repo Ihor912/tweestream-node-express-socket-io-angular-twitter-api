@@ -1,10 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { StreamConnectionStatusEnum } from '../../../types';
 import { BaseComponent } from '../../base';
 
@@ -15,12 +10,15 @@ import { BaseComponent } from '../../base';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageHeaderComponent extends BaseComponent {
-  @Input() streamConnectionStatus: StreamConnectionStatusEnum | null =
-    StreamConnectionStatusEnum.PROCESSING;
+  @Input() streamConnectionStatus: StreamConnectionStatusEnum | null = null;
 
   readonly StreamConnectionStatusEnum = StreamConnectionStatusEnum;
 
-  constructor() {
+  constructor(private router: Router) {
     super();
+  }
+
+  navigateToHome() {
+    this.router.navigateByUrl('/');
   }
 }

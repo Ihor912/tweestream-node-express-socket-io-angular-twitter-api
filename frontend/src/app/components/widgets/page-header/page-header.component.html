@@ -1,7 +1,11 @@
 <nz-page-header class="site-page-header">
-  <nz-page-header-title>{{ "site.title" | translate }}</nz-page-header-title>
+  <nz-page-header-title
+    ><a (click)="navigateToHome()">{{
+      "site.title" | translate
+    }}</a></nz-page-header-title
+  >
 
-  <nz-page-header-tags>
+  <nz-page-header-tags *ngIf="streamConnectionStatus">
     <ng-container [ngSwitch]="streamConnectionStatus">
       <nz-tag *ngSwitchCase="StreamConnectionStatusEnum.ON" nzColor="success">{{
         "connection-status.on" | translate
