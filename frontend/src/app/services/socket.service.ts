@@ -21,7 +21,7 @@ export class SocketService {
     public timeTrackingService: TimeTrackingService
   ) {}
 
-  getDataStream(): Observable<TweetResponse> {
+  getDataStream(): Observable<TweetResponse | StreamConnectionError> {
     this.socket = io(this.prepareSocketURL());
 
     this.socket.on(this.socketEndpoints.dataStreamConnectionEvent, () => {
@@ -29,7 +29,7 @@ export class SocketService {
       this.timeTrackingService.startTracking();
     });
 
-    return new Observable<TweetResponse>((observer) => {
+    return new Observable<TweetResponse | StreamConnectionError>((observer) => {
       this.socket.on(this.socketEndpoints.newTweetClientEvent, (tweet) => {
         this.timeTrackingService.trackNewTweet();
         observer.next(tweet as TweetResponse);
@@ -37,12 +37,12 @@ export class SocketService {
 
       // handle server error
       this.socket.on(this.socketEndpoints.errorEvent, (error) =>
-        observer.error(error as StreamConnectionError)
+        observer.next(error as StreamConnectionError)
       );
 
       // handle no-connection-with-server error
       this.socket.on(this.socketEndpoints.noConnectionEvent, () => {
-        observer.error({
+        observer.next({
           connection_issue: StreamConnectionIssueEnum.NO_CONNECTION_WITH_SERVER,
         } as StreamConnectionError);
       });

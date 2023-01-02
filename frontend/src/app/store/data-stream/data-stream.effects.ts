@@ -15,25 +15,32 @@ export class DataStreamEffects {
       fetch({
         run: () =>
           this.socketService.getDataStream().pipe(
-            map((tweetResponse: TweetResponse) => {
-              const authorName =
-                tweetResponse.includes?.users.find(
-                  (x: { username: string }) => x.username
-                )?.username || null;
+            map((response: TweetResponse | StreamConnectionError) => {
+              if ((response as StreamConnectionError).connection_issue) {
+                return DataStreamActions.getDataStreamActionFailure({
+                  error: response as StreamConnectionError,
+                });
+              } else {
+                const tweetResponse = response as TweetResponse;
+                const authorName =
+                  tweetResponse.includes?.users.find(
+                    (x: { username: string }) => x.username
+                  )?.username || null;
 
-              const location =
-                tweetResponse.includes?.users.find(
-                  (x: { location: string }) => x.location
-                )?.location || null;
+                const location =
+                  tweetResponse.includes?.users.find(
+                    (x: { location: string }) => x.location
+                  )?.location || null;
 
-              const tweet: Tweet = {
-                id: tweetResponse.data?.id,
-                text: tweetResponse.data?.text,
-                authorName,
-                location,
-              };
+                const tweet: Tweet = {
+                  id: tweetResponse.data?.id,
+                  text: tweetResponse.data?.text,
+                  authorName,
+                  location,
+                };
 
-              return DataStreamActions.getDataStreamActionSuccess(tweet);
+                return DataStreamActions.getDataStreamActionSuccess(tweet);
+              }
             })
           ),
         onError: (action, error: StreamConnectionError) =>
