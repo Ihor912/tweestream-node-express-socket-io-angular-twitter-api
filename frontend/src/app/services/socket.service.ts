@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { distinctUntilChanged, filter, Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import {
   StreamConnectionError,
@@ -18,16 +18,18 @@ export class SocketService {
   constructor(public appConfigService: AppConfigService) {}
 
   getDataStream(): Observable<TweetResponse> {
-    this.socket = io(this.prepareApiURL());
+    if (!this.socket) {
+      this.socket = io(this.prepareSocketURL());
 
-    this.socket.on(this.socketEndpoints.dataStreamConnectionEvent, () => {
-      console.log('Connected to server.');
-    });
+      this.socket.on(this.socketEndpoints.dataStreamConnectionEvent, () => {
+        console.log('Connected to server.');
+      });
+    }
 
-    return new Observable((observer) => {
-      this.socket.on(this.socketEndpoints.newTweetClientEvent, (tweet) =>
-        observer.next(tweet as TweetResponse)
-      );
+    return new Observable<TweetResponse>((observer) => {
+      this.socket.on(this.socketEndpoints.newTweetClientEvent, (tweet) => {
+        observer.next(tweet as TweetResponse);
+      });
 
       // handle server error
       this.socket.on(this.socketEndpoints.errorEvent, (error) =>
@@ -46,21 +48,12 @@ export class SocketService {
     });
   }
 
-  disconnectFromDataStream(): void {
-    if (this.socket) {
-      console.log('Disconnected from server.');
-      this.socket.disconnect();
-    }
+  destroySocketConnection() {
+    this.socket.disconnect();
+    this.socket.removeAllListeners();
   }
 
-  reconnectToDataStream(): void {
-    if (this.socket?.disconnected) {
-      console.log('Reconnected to server.');
-      this.socket.connect();
-    }
-  }
-
-  private prepareApiURL(): string {
-    return this.appConfigService.getBaseApiURL();
+  private prepareSocketURL(): string {
+    return this.appConfigService.getBaseSocketURL();
   }
 }

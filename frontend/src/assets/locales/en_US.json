@@ -1,8 +1,12 @@
 {
   "general.error": "Error",
+  "site.title": "TweeStream",
   "error.message.too-many-connections": "This stream is currently at the maximum allowed connection limit.",
   "error.message.no-connection-with-server": "No connection with Server.",
   "error.message.something-went-wrong": "Something went wrong.",
+  "connection-status.on": "Stream is ON",
+  "connection-status.off": "Not connected to the Server",
+  "connection-status.processing": "Processing",
   "page-not-found.title": "404 Error",
   "page-not-found.subtitle": "Page Not Found",
   "tweet-card.go-to-tweet.btn-text": "Go To Tweet"

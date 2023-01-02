@@ -6,16 +6,15 @@ import {
   StreamStatusResponse,
   Tweet,
   Rule,
+  StreamConnectionStatusEnum,
 } from '../../types';
 
 export const DATA_STREAM_FEATURE_KEY = 'data-stream';
 
 export interface DataStreamState extends EntityState<Rule> {
-  dataStreamingInProgress: boolean;
+  streamConnectionStatus: StreamConnectionStatusEnum;
   getDataStreamSuccess: Tweet | null;
   getDataStreamError?: StreamConnectionError | null;
-  stopDataStreamSuccess: StreamStatusResponse | null;
-  stopDataStreamError?: StreamConnectionError | null;
   reconnectToDataStreamSuccess: StreamStatusResponse | null;
   reconnectToDataStreamError?: StreamConnectionError | null;
 }
@@ -29,11 +28,9 @@ export interface DataStreamPartialState {
 
 export const dataStreamInitialState: DataStreamState =
   dataStreamAdapter.getInitialState({
-    dataStreamingInProgress: false,
+    streamConnectionStatus: StreamConnectionStatusEnum.PROCESSING,
     getDataStreamSuccess: null,
     getDataStreamError: null,
-    stopDataStreamSuccess: null,
-    stopDataStreamError: null,
     reconnectToDataStreamSuccess: null,
     reconnectToDataStreamError: null,
   });
@@ -42,55 +39,22 @@ const reducer = createReducer(
   dataStreamInitialState,
   on(DataStreamActions.getDataStreamAction, (state, data) => ({
     ...state,
+    streamConnectionStatus: StreamConnectionStatusEnum.PROCESSING,
     getDataStreamSuccess: null,
     getDataStreamError: null,
   })),
   on(DataStreamActions.getDataStreamActionSuccess, (state, data) => ({
     ...state,
-    dataStreamingInProgress: true,
+    streamConnectionStatus: StreamConnectionStatusEnum.ON,
     getDataStreamSuccess: data,
     getDataStreamError: null,
   })),
   on(DataStreamActions.getDataStreamActionFailure, (state, { error }) => ({
     ...state,
+    streamConnectionStatus: StreamConnectionStatusEnum.OFF,
     getDataStreamSuccess: null,
     getDataStreamError: error,
-  })),
-  on(DataStreamActions.stopDataStreamAction, (state, data) => ({
-    ...state,
-    stopDataStreamSuccess: null,
-    stopDataStreamError: null,
-  })),
-  on(DataStreamActions.stopDataStreamActionSuccess, (state, data) => ({
-    ...state,
-    dataStreamingInProgress: false,
-    stopDataStreamSuccess: data,
-    stopDataStreamError: null,
-  })),
-  on(DataStreamActions.stopDataStreamActionFailure, (state, { error }) => ({
-    ...state,
-    stopDataStreamSuccess: null,
-    stopDataStreamError: error,
-  })),
-  on(DataStreamActions.reconnectToDataStreamAction, (state, data) => ({
-    ...state,
-    reconnectToDataStreamSuccess: null,
-    reconnectToDataStreamError: null,
-  })),
-  on(DataStreamActions.reconnectToDataStreamActionSuccess, (state, data) => ({
-    ...state,
-    dataStreamingInProgress: true,
-    reconnectToDataStreamSuccess: data,
-    reconnectToDataStreamError: null,
-  })),
-  on(
-    DataStreamActions.reconnectToDataStreamActionFailure,
-    (state, { error }) => ({
-      ...state,
-      reconnectToDataStreamSuccess: null,
-      reconnectToDataStreamError: error,
-    })
-  )
+  }))
 );
 
 export function dataStreamReducer(

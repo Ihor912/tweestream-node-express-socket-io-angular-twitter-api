@@ -42,44 +42,6 @@ export class DataStreamEffects {
     )
   );
 
-  stopDataStream$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(DataStreamActions.stopDataStreamAction),
-      fetch({
-        run: () =>
-          of(true).pipe(
-            map(() => {
-              this.socketService.disconnectFromDataStream();
-              return DataStreamActions.stopDataStreamActionSuccess({
-                status: 'OK',
-              });
-            })
-          ),
-        onError: (action, error: StreamConnectionError) =>
-          DataStreamActions.stopDataStreamActionFailure({ error }),
-      })
-    )
-  );
-
-  reconnectDataStream$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(DataStreamActions.reconnectToDataStreamAction),
-      fetch({
-        run: () =>
-          of(true).pipe(
-            map(() => {
-              this.socketService.reconnectToDataStream();
-              return DataStreamActions.reconnectToDataStreamActionSuccess({
-                status: 'OK',
-              });
-            })
-          ),
-        onError: (action, error: StreamConnectionError) =>
-          DataStreamActions.reconnectToDataStreamActionFailure({ error }),
-      })
-    )
-  );
-
   constructor(
     private actions$: Actions,
     private socketService: SocketService

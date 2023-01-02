@@ -37,6 +37,12 @@ export interface StreamStatusResponse {
   status: string;
 }
 
+export enum StreamConnectionStatusEnum {
+  ON = 'ON',
+  OFF = 'OFF',
+  PROCESSING = 'PROCESSING',
+}
+
 export enum StreamConnectionIssueEnum {
   TOO_MANY_CONNECTIONS = 'TooManyConnections',
   NO_CONNECTION_WITH_SERVER = 'NoConnectionWithServer',

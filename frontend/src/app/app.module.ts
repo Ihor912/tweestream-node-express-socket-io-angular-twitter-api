@@ -22,6 +22,17 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+import { IconDefinition } from '@ant-design/icons-angular';
+import * as AllIcons from '@ant-design/icons-angular/icons';
+import { NZ_ICONS } from 'ng-zorro-antd/icon';
+
+const antDesignIcons = AllIcons as {
+  [key: string]: IconDefinition;
+};
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(
+  (key) => antDesignIcons[key]
+);
+
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/locales/', '.json');
 }
@@ -47,7 +58,10 @@ export function createTranslateLoader(http: HttpClient) {
     BrowserAnimationsModule,
     NzNotificationModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [
+    { provide: NZ_I18N, useValue: en_US },
+    { provide: NZ_ICONS, useValue: icons },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

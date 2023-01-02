@@ -10,9 +10,9 @@ export const getDataStreamState = createFeatureSelector<
   DataStreamState
 >(DATA_STREAM_FEATURE_KEY);
 
-export const isDataStreamingInProgress = createSelector(
+export const streamConnectionStatus = createSelector(
   getDataStreamState,
-  (state: DataStreamState) => state.dataStreamingInProgress
+  (state: DataStreamState) => state.streamConnectionStatus
 );
 
 export const getDataStreamSuccess = createSelector(
@@ -22,15 +22,6 @@ export const getDataStreamSuccess = createSelector(
 export const getDataStreamError = createSelector(
   getDataStreamState,
   (state: DataStreamState) => state.getDataStreamError
-);
-
-export const stopDataStreamSuccess = createSelector(
-  getDataStreamState,
-  (state: DataStreamState) => state.stopDataStreamSuccess
-);
-export const stopDataStreamError = createSelector(
-  getDataStreamState,
-  (state: DataStreamState) => state.stopDataStreamError
 );
 
 export const reconnectToDataStreamSuccess = createSelector(

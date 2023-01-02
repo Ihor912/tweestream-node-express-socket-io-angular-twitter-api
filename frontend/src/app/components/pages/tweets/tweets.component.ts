@@ -2,8 +2,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Observable, takeUntil } from 'rxjs';
 import { DataStreamFacade, DataStreamingRuleFacade } from '../../../store';
-import { ErrorHandlingService } from '../../../services';
-import { Tweet, StreamConnectionError } from '../../../types';
+import { ErrorHandlingService, SocketService } from '../../../services';
+import {
+  Tweet,
+  StreamConnectionError,
+  StreamConnectionStatusEnum,
+} from '../../../types';
 import { BasePageComponent } from '../../base';
 
 @Component({
@@ -14,25 +18,19 @@ import { BasePageComponent } from '../../base';
 export class TweetsComponent extends BasePageComponent {
   tweetStream: Tweet[] = [];
   isLoading = true;
-  isDataStreamingInProgress: Observable<boolean> =
-    this.dataStreamFacade.isDataStreamingInProgress$;
+  streamConnectionStatus$: Observable<StreamConnectionStatusEnum> =
+    this.dataStreamFacade.streamConnectionStatus$;
 
   constructor(
     private dataStreamingRuleFacade: DataStreamingRuleFacade,
     private dataStreamFacade: DataStreamFacade,
-    private errorHandlingService: ErrorHandlingService
+    private errorHandlingService: ErrorHandlingService,
+    private socketService: SocketService
   ) {
     super();
   }
   override onInit() {
     this.dataStreamFacade.getDataStream();
-
-    // setTimeout(() => {
-    //   this.dataStreamFacade.stopDataStream();
-    // }, 5000);
-    // setTimeout(() => {
-    //   this.dataStreamFacade.reconnectToDataStream();
-    // }, 15000);
 
     // setTimeout(() => {
     //   this.dataStreamingRuleFacade.deleteRules();
@@ -72,7 +70,6 @@ export class TweetsComponent extends BasePageComponent {
         if (error) {
           this.isLoading = false;
           this.errorHandlingService.handleStreamConnectionError(error);
-          this.dataStreamFacade.stopDataStream();
         }
       });
   }
@@ -82,7 +79,7 @@ export class TweetsComponent extends BasePageComponent {
   }
 
   override onDestroy() {
-    this.dataStreamFacade.stopDataStream();
+    this.socketService.destroySocketConnection();
     super.onDestroy();
   }
 }

@@ -1,0 +1,26 @@
+<nz-page-header class="site-page-header">
+  <nz-page-header-title>{{ "site.title" | translate }}</nz-page-header-title>
+
+  <nz-page-header-tags>
+    <ng-container [ngSwitch]="streamConnectionStatus">
+      <nz-tag *ngSwitchCase="StreamConnectionStatusEnum.ON" nzColor="success">{{
+        "site.title" | translate
+      }}</nz-tag>
+      <nz-tag *ngSwitchCase="StreamConnectionStatusEnum.OFF" nzColor="warning">
+        <span nz-icon nzType="exclamation-circle"></span>
+        <span>{{ "connection-status.off" | translate }}</span>
+      </nz-tag>
+      <nz-tag
+        *ngSwitchCase="StreamConnectionStatusEnum.PROCESSING"
+        nzColor="processing"
+      >
+        <span nz-icon nzType="sync" nzSpin></span>
+        <span>{{ "connection-status.processing" | translate }}</span>
+      </nz-tag>
+    </ng-container>
+  </nz-page-header-tags>
+
+  <nz-page-header-extra>
+    <nz-space> </nz-space>
+  </nz-page-header-extra>
+</nz-page-header>
