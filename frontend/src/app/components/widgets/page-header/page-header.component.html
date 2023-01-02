@@ -37,4 +37,12 @@
       </nz-select>
     </nz-space>
   </nz-page-header-extra>
+  <nz-page-header-content *ngIf="streamConnectionStatus">
+    <div class="extra">
+      <nz-statistic
+        [nzValue]="tweetsNumberPerMinute"
+        [nzTitle]="'page-header.tweets-per-minute' | translate"
+      ></nz-statistic>
+    </div>
+  </nz-page-header-content>
 </nz-page-header>

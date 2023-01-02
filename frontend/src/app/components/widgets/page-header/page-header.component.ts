@@ -18,6 +18,7 @@ import { BaseComponent } from '../../base';
 export class PageHeaderComponent extends BaseComponent {
   @Input() streamConnectionStatus: StreamConnectionStatusEnum | null = null;
   @Input() currentStreamingHashtags: string[] | null | undefined = [];
+  @Input() tweetsNumberPerMinute: number = 0;
 
   @Output() hashtagsChange: EventEmitter<string[]> = new EventEmitter();
 

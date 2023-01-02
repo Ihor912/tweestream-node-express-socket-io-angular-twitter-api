@@ -8,8 +8,10 @@ import {
   StreamConnectionError,
   StreamConnectionStatusEnum,
   RulesState,
+  RulesStatusResponse,
 } from '../../../types';
 import { BasePageComponent } from '../../base';
+import { TimeTrackingService } from 'src/app/services/time-tracking.service';
 
 @Component({
   selector: 'tweets',
@@ -34,7 +36,8 @@ export class TweetsComponent extends BasePageComponent {
     private dataStreamingRuleFacade: DataStreamingRuleFacade,
     private dataStreamFacade: DataStreamFacade,
     private errorHandlingService: ErrorHandlingService,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private timeTrackingService: TimeTrackingService
   ) {
     super();
   }
@@ -46,7 +49,15 @@ export class TweetsComponent extends BasePageComponent {
       .pipe(takeUntil(this.destroyed$))
       .subscribe((error: HttpErrorResponse | null | undefined) => {
         if (error) {
-          this.errorHandlingService.handleHttpError(error);
+          // this.errorHandlingService.handleHttpError(error);
+        }
+      });
+
+    this.dataStreamingRuleFacade.setRulesSuccess$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((data: RulesStatusResponse | null | undefined) => {
+        if (data) {
+          this.timeTrackingService.resetStartTrackingDateTime();
         }
       });
 
@@ -92,6 +103,10 @@ export class TweetsComponent extends BasePageComponent {
 
   tweetTrackBy(index: number, tweet: Tweet) {
     return tweet.id;
+  }
+
+  get tweetsNumberPerMinute(): number {
+    return this.timeTrackingService.averageNumberOfTweetsPerMinute;
   }
 
   override onDestroy() {

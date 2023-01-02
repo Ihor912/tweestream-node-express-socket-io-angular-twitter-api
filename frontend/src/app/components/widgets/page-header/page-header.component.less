@@ -1,8 +1,20 @@
+@import "./../../../../custom-variables.less";
+
 :host ::ng-deep {
   nz-space {
     width: 300px;
   }
   nz-select {
     width: 100%;
+  }
+}
+
+:host {
+  .extra {
+    display: flex;
+    width: max-content;
+    margin-left: auto;
+    border: 1px @gray-border solid;
+    padding: 5px 15px;
   }
 }
